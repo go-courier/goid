@@ -9,7 +9,7 @@ import (
 )
 
 func ExampleLogIDMap() {
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 50; i++ {
 		go func() {
 			// set logid at begin of goroutine
 			log_id.Default.Set(fmt.Sprintf("%d", rand.Int()))
@@ -32,7 +32,7 @@ func ExampleLogIDMap() {
 	// missing
 	fmt.Println(log_id.Default.Get())
 	// Output:
-	//100
+	//50
 	//0
 	//
 }

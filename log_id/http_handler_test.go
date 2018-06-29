@@ -21,7 +21,7 @@ func ExampleLogIDHttpHandler() {
 
 	logIDMap := &LogIDMap{}
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 50; i++ {
 		go func() {
 			req, _ := http.NewRequest(http.MethodGet, "/", nil)
 			LogIDHttpHandler(logIDMap)(h).ServeHTTP(http.ResponseWriter(nil), req)
@@ -34,6 +34,6 @@ func ExampleLogIDHttpHandler() {
 	time.Sleep(50 * time.Millisecond)
 	fmt.Println(len(logIDMap.All()))
 	// Output:
-	//100
+	//50
 	//0
 }
