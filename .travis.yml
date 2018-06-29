@@ -6,6 +6,7 @@ go:
 
 before_install:
   - go get -u golang.org/x/vgo
+  - go run ./patch-runtime/main.go
 
 script:
   - $GOPATH/bin/vgo test -race -coverprofile=coverage.txt -covermode=atomic ./...
