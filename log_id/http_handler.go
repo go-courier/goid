@@ -2,6 +2,7 @@ package log_id
 
 import (
 	"net/http"
+	"github.com/google/uuid"
 )
 
 func LogIDHttpHandler(idMap *LogIDMap) func(handler http.Handler) http.Handler {
@@ -23,7 +24,11 @@ type logIdHandler struct {
 }
 
 func (h *logIdHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	h.logIDMap.Set(req.Header.Get("X-Request-ID"))
+	requestID := req.Header.Get("X-Request-ID")
+	if requestID == "" {
+		requestID = uuid.New().String()
+	}
+	h.logIDMap.Set(requestID)
 	defer h.logIDMap.Clear()
 
 	h.nextHandler.ServeHTTP(rw, req)
