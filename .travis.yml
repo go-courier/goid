@@ -9,7 +9,7 @@ before_install:
   - go run ./patch-runtime/main.go
 
 script:
-  - $GOPATH/bin/vgo test -race -coverprofile=coverage.txt -covermode=atomic ./...
+  - make cover
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
