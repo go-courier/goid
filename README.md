@@ -14,6 +14,18 @@ Hacking runtime to get goroutine id for caching logid
 go get -u github.com/go-courier/goid/patch-runtime && patch-runtime
 ```
 
+For go module user:
+
+need run blow
+
+```
+cd $GOPATH/src
+mkdir -p global-tools
+cd global-tools
+go mod init
+```
+
+
 ```go
 package log_id_test
 
