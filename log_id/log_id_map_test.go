@@ -3,6 +3,7 @@ package log_id_test
 import (
 	"fmt"
 	"math/rand"
+	"testing"
 	"time"
 
 	"github.com/go-courier/goid/log_id"
@@ -35,4 +36,25 @@ func ExampleLogIDMap() {
 	//20
 	//0
 	//
+}
+
+func TestLogIDMapGo(t *testing.T) {
+	for i := 0; i < 3; i++ {
+		do := log_id.Default.With(func() {
+			id := log_id.Default.Get()
+			fmt.Println("in goroutinue", id)
+
+			for i := 0; i < 3; i++ {
+				doInGoroutine := log_id.Default.With(func() {
+					id := log_id.Default.Get()
+					fmt.Println("goroutinue in goroutinue", id)
+				})
+				go doInGoroutine()
+			}
+		}, fmt.Sprintf("%d", rand.Int()))
+
+		go do()
+	}
+
+	time.Sleep(500 * time.Millisecond)
 }

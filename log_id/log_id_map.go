@@ -2,6 +2,7 @@ package log_id
 
 import (
 	"runtime"
+	"strings"
 	"sync"
 )
 
@@ -24,6 +25,22 @@ func (m *LogIDMap) Get() string {
 
 func (m *LogIDMap) Set(id string) {
 	m.m.Store(runtime.GoID(), id)
+}
+
+func (m *LogIDMap) With(cb func(), ids ...string) func() {
+	id := ""
+
+	if len(ids) == 0 {
+		id = m.Get()
+	} else {
+		id = strings.Join(ids, ",")
+	}
+
+	return func() {
+		m.Set(id)
+		defer m.Clear()
+		cb()
+	}
 }
 
 func (m *LogIDMap) All() map[int64]string {

@@ -29,8 +29,10 @@ func (h *logIdHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	if requestID == "" {
 		requestID = uuid.New().String()
 	}
-	h.logIDMap.Set(requestID)
-	defer h.logIDMap.Clear()
 
-	h.nextHandler.ServeHTTP(rw, req)
+	do := h.logIDMap.With(func() {
+		h.nextHandler.ServeHTTP(rw, req)
+	}, requestID)
+
+	do()
 }
